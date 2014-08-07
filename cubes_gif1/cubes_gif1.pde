@@ -22,8 +22,6 @@ ControlP5 cp5;
 ControlFrame cf;
 ColorPicker cp1;
 ColorPicker cp2;
-float speedFactor = 0.25; //need to initialize the variables associated with the sliders, in addition to setting the default for the slider
-float numWavesFactor = 0.25;
 
 // Setup the Processing Canvas
 void setup(){
@@ -54,6 +52,9 @@ ControlFrame addControlFrame(String theName, int theWidth, int theHeight) {
 public class ControlFrame extends PApplet {
 
   int w, h;
+  float speedFactor = 0.25; //need to initialize the variables associated with the sliders, in addition to setting the default for the slider
+  float numWavesFactor = 0.25;
+  float colorFactor = 1;
 
   public void setup() {
     size(w, h);
@@ -61,14 +62,15 @@ public class ControlFrame extends PApplet {
     cp5 = new ControlP5(this);
     cp5.addSlider("speedFactor", 0, 1, 0.25, 10, 10, 100, 10);
     cp5.addSlider("numWavesFactor", 0, 1, 0.25, 10, 30, 100, 10);
+    cp5.addSlider("colorFactor", 1, 2, 1, 10, 50, 100, 10);
     
     cp1 = cp5.addColorPicker("picker1")
-          .setPosition(10, 50)
+          .setPosition(10, 70)
           .setColorValue(color(137, 209, 184, 255))
           ;
           
     cp2 = cp5.addColorPicker("picker2")
-          .setPosition(10, 130)
+          .setPosition(10, 140)
           .setColorValue(color(204, 226, 189, 255))
           ;  
   }
@@ -144,8 +146,8 @@ void draw(){
             float d7 = distance(destinationp7, center);
             float d5 = distance(destinationp5, center);
           
-            float speed = speedFactor * MAX_SPEED;
-            float numWavesFactor = numWavesFactor * MAX_NUM_WAVES;
+            float speed = cf.speedFactor * MAX_SPEED;
+            float numWavesFactor = cf.numWavesFactor * MAX_NUM_WAVES;
             numWavesFactor = map(numWavesFactor, 0, MAX_NUM_WAVES, 1, MAX_NUM_WAVES);
             
             float verticalScalar13 = ((sin(speed*(frameCount/FRAME_RATE + (d13/maxDistance)*numWavesFactor*PI)) + 1)/2);
@@ -162,9 +164,11 @@ void draw(){
             p7 = new Point(centerx + LONG, centery + EDGE + SHORT * (1 - verticalScalar7));
             
             float d3 = distance(p3, center);
-            float colorFactor = d3/maxDistance;
-                        
-            color mainColor = lerpColor(blue, yellow, colorFactor);
+            float colorFactor = d3/pow(maxDistance, cf.colorFactor);
+            
+            color color1 = cp1.getColorValue();
+            color color2 = cp2.getColorValue();
+            color mainColor = lerpColor(color1, color2, colorFactor);
             color lighter = lerpColor(mainColor, white, 0.5);
             color darker = lerpColor(mainColor, black, 0.1);
             
