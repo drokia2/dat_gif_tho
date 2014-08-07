@@ -1,4 +1,6 @@
 import g4p_controls.*;
+import controlP5.*;
+import java.awt.Frame;
 
 class Point {
     float x, y;
@@ -16,9 +18,12 @@ float distance(Point p1, Point p2) {
 float FRAME_RATE = 100;
 
 //GUI
-GWindow parametersWindow;
-GSlider speedSlider;
-GSlider numWavesSlider;
+ControlP5 cp5;
+ControlFrame cf;
+ColorPicker cp1;
+ColorPicker cp2;
+float speedFactor = 0.25; //need to initialize the variables associated with the sliders, in addition to setting the default for the slider
+float numWavesFactor = 0.25;
 
 // Setup the Processing Canvas
 void setup(){
@@ -28,37 +33,65 @@ void setup(){
   createGUI();
 }
 
-public void createGUI() {
-  G4P.messagesEnabled(false);
-  G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
-  G4P.setCursor(ARROW);
-  
-  //window
-  parametersWindow = new GWindow(this, "Parameters", 0, 0, 240, 120, false, JAVA2D);
-  parametersWindow.addDrawHandler(this, "parametersWindow");
-  
-  //speed slider
-  speedSlider = new GSlider(parametersWindow.papplet, 70, 20, 100, 40, 10.0);
-  speedSlider.setLimits(0.25, 0.0, 1.0);
-  speedSlider.setNumberFormat(G4P.DECIMAL, 2);
-  speedSlider.setOpaque(false);
-  speedSlider.addEventHandler(this, "sliderChanged");
-  
-  //numWavesSlider
-  numWavesSlider = new GSlider(parametersWindow.papplet, 70, 60, 100, 40, 10.0);
-  numWavesSlider.setLimits(0.25, 0.0, 1.0);
-  numWavesSlider.setNumberFormat(G4P.DECIMAL, 2);
-  numWavesSlider.setOpaque(false);
-  numWavesSlider.addEventHandler(this, "sliderChanged");
+public void createGUI() {  
+  cp5 = new ControlP5(this);
+  cf = addControlFrame("parameters", 300,300);
 }
 
-synchronized public void parametersWindow(GWinApplet appc, GWinData data) {
-  appc.background(230);
+ControlFrame addControlFrame(String theName, int theWidth, int theHeight) {
+  Frame f = new Frame(theName);
+  ControlFrame p = new ControlFrame(this, theWidth, theHeight);
+  f.add(p);
+  p.init();
+  f.setTitle(theName);
+  f.setSize(p.w, p.h);
+  f.setLocation(100, 100);
+  f.setResizable(false);
+  f.setVisible(true);
+  return p;
 }
- 
-// Handle events for slider1
-public void speedSliderChanged(GSlider source, GEvent event) {
-  println("new value: " + source.getValueF());
+
+public class ControlFrame extends PApplet {
+
+  int w, h;
+
+  public void setup() {
+    size(w, h);
+    frameRate(25);
+    cp5 = new ControlP5(this);
+    cp5.addSlider("speedFactor", 0, 1, 0.25, 10, 10, 100, 10);
+    cp5.addSlider("numWavesFactor", 0, 1, 0.25, 10, 30, 100, 10);
+    
+    cp1 = cp5.addColorPicker("picker1")
+          .setPosition(10, 50)
+          .setColorValue(color(137, 209, 184, 255))
+          ;
+          
+    cp2 = cp5.addColorPicker("picker2")
+          .setPosition(10, 130)
+          .setColorValue(color(204, 226, 189, 255))
+          ;  
+  }
+
+  public void draw() {
+      background(255);
+  }
+  
+  private ControlFrame() {
+  }
+
+  public ControlFrame(Object theParent, int theWidth, int theHeight) {
+    parent = theParent;
+    w = theWidth;
+    h = theHeight;
+  }
+
+  public ControlP5 control() {
+    return cp5;
+  }
+  
+  ControlP5 cp5;
+  Object parent; 
 }
 
 int CUBE_WIDTH = 20;
@@ -86,19 +119,6 @@ color yellow = color(204, 226, 189);
 color black = color(0);
 color white = color(255);
 
-public int computeNumWaves()
-{
-  float sliderValue = numWavesSlider.getValueF();
-  
-  if (sliderValue < 0.25) {
-    return 1;
-  } else if (sliderValue < 0.5) {
-    return 2;
-  } else if (sliderValue < 0.75) {
-    return 4;
-  } else return 8;
-}
-
 // Main draw loop
 void draw(){
     background(0);
@@ -124,8 +144,8 @@ void draw(){
             float d7 = distance(destinationp7, center);
             float d5 = distance(destinationp5, center);
           
-            float speed = speedSlider.getValueF() * MAX_SPEED;
-            float numWavesFactor = numWavesSlider.getValueF() * MAX_NUM_WAVES;
+            float speed = speedFactor * MAX_SPEED;
+            float numWavesFactor = numWavesFactor * MAX_NUM_WAVES;
             numWavesFactor = map(numWavesFactor, 0, MAX_NUM_WAVES, 1, MAX_NUM_WAVES);
             
             float verticalScalar13 = ((sin(speed*(frameCount/FRAME_RATE + (d13/maxDistance)*numWavesFactor*PI)) + 1)/2);
