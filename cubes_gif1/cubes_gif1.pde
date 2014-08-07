@@ -1,3 +1,5 @@
+import g4p_controls.*;
+
 class Point {
     float x, y;
 
@@ -11,14 +13,40 @@ float distance(Point p1, Point p2) {
   return sqrt( pow(p2.y - p1.y,2) + pow( p2.x - p1.x,2) );
 }
 
-
 float FRAME_RATE = 100;
+
+//GUI
+GWindow parametersWindow;
+GSlider speedSlider;
 
 // Setup the Processing Canvas
 void setup(){
   size(CANVAS_WIDTH, CANVAS_HEIGHT, OPENGL);
   frameRate(FRAME_RATE);
   smooth();
+  createGUI();
+}
+
+public void createGUI() {
+  G4P.messagesEnabled(false);
+  G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
+  G4P.setCursor(ARROW);
+  parametersWindow = new GWindow(this, "Parameters", 0, 0, 240, 120, false, JAVA2D);
+  parametersWindow.addDrawHandler(this, "parametersWindow");
+  speedSlider = new GSlider(parametersWindow.papplet, 70, 40, 100, 40, 10.0);
+  speedSlider.setLimits(0.5, 0.0, 1.0);
+  speedSlider.setNumberFormat(G4P.DECIMAL, 2);
+  speedSlider.setOpaque(false);
+  speedSlider.addEventHandler(this, "speedSliderChanged");
+}
+
+synchronized public void parametersWindow(GWinApplet appc, GWinData data) {
+  appc.background(230);
+}
+ 
+// Handle events for slider1
+public void speedSliderChanged(GSlider source, GEvent event) {
+  println("new value: " + source.getValueF());
 }
 
 int CUBE_WIDTH = 20;
@@ -37,7 +65,7 @@ float LONG = 20;
 float ORIGINAL_LONG = 20;
 float EDGE = sqrt(pow(SHORT,2) + pow(LONG,2));
 
-
+int MAX_SPEED = 4;
 
 // Main draw loop
 void draw(){
@@ -64,9 +92,10 @@ void draw(){
             float d7 = distance(destinationp7, center);
             float d5 = distance(destinationp5, center);
           
-            float verticalScalar13 = ((sin(frameCount/FRAME_RATE + (d13/maxDistance)*4*PI) + 1)/2);
-            float verticalScalar5 = (sin(frameCount/FRAME_RATE + (d5/maxDistance)*4*PI) + 1)/2;
-            float verticalScalar7 = (sin(frameCount/FRAME_RATE + (d7/maxDistance)*4*PI) + 1)/2;     
+            float speed = speedSlider.getValueF() * MAX_SPEED;
+            float verticalScalar13 = ((sin(speed*(frameCount/FRAME_RATE + (d13/maxDistance)*4*PI)) + 1)/2);
+            float verticalScalar5 = (sin(speed*(frameCount/FRAME_RATE + (d5/maxDistance)*4*PI)) + 1)/2;
+            float verticalScalar7 = (sin(speed*(frameCount/FRAME_RATE + (d7/maxDistance)*4*PI)) + 1)/2;     
           
             Point p2, p3, p4, p6;
             p1 = new Point(centerx, centery - SHORT * verticalScalar13);
