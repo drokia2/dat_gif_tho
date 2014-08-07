@@ -18,6 +18,7 @@ float FRAME_RATE = 100;
 //GUI
 GWindow parametersWindow;
 GSlider speedSlider;
+GSlider numWavesSlider;
 
 // Setup the Processing Canvas
 void setup(){
@@ -31,13 +32,24 @@ public void createGUI() {
   G4P.messagesEnabled(false);
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
+  
+  //window
   parametersWindow = new GWindow(this, "Parameters", 0, 0, 240, 120, false, JAVA2D);
   parametersWindow.addDrawHandler(this, "parametersWindow");
-  speedSlider = new GSlider(parametersWindow.papplet, 70, 40, 100, 40, 10.0);
+  
+  //speed slider
+  speedSlider = new GSlider(parametersWindow.papplet, 70, 20, 100, 40, 10.0);
   speedSlider.setLimits(0.25, 0.0, 1.0);
   speedSlider.setNumberFormat(G4P.DECIMAL, 2);
   speedSlider.setOpaque(false);
-  speedSlider.addEventHandler(this, "speedSliderChanged");
+  speedSlider.addEventHandler(this, "sliderChanged");
+  
+  //numWavesSlider
+  numWavesSlider = new GSlider(parametersWindow.papplet, 70, 60, 100, 40, 10.0);
+  numWavesSlider.setLimits(0.25, 0.0, 1.0);
+  numWavesSlider.setNumberFormat(G4P.DECIMAL, 2);
+  numWavesSlider.setOpaque(false);
+  numWavesSlider.addEventHandler(this, "sliderChanged");
 }
 
 synchronized public void parametersWindow(GWinApplet appc, GWinData data) {
@@ -66,12 +78,26 @@ float ORIGINAL_LONG = 20;
 float EDGE = sqrt(pow(SHORT,2) + pow(LONG,2));
 
 int MAX_SPEED = 4;
+int MAX_NUM_WAVES = 8;
 
 //Colors
 color blue = color(137,209,184);
 color yellow = color(204, 226, 189);
 color black = color(0);
 color white = color(255);
+
+public int computeNumWaves()
+{
+  float sliderValue = numWavesSlider.getValueF();
+  
+  if (sliderValue < 0.25) {
+    return 1;
+  } else if (sliderValue < 0.5) {
+    return 2;
+  } else if (sliderValue < 0.75) {
+    return 4;
+  } else return 8;
+}
 
 // Main draw loop
 void draw(){
@@ -99,9 +125,12 @@ void draw(){
             float d5 = distance(destinationp5, center);
           
             float speed = speedSlider.getValueF() * MAX_SPEED;
-            float verticalScalar13 = ((sin(speed*(frameCount/FRAME_RATE + (d13/maxDistance)*4*PI)) + 1)/2);
-            float verticalScalar5 = (sin(speed*(frameCount/FRAME_RATE + (d5/maxDistance)*4*PI)) + 1)/2;
-            float verticalScalar7 = (sin(speed*(frameCount/FRAME_RATE + (d7/maxDistance)*4*PI)) + 1)/2;     
+            float numWavesFactor = numWavesSlider.getValueF() * MAX_NUM_WAVES;
+            numWavesFactor = map(numWavesFactor, 0, MAX_NUM_WAVES, 1, MAX_NUM_WAVES);
+            
+            float verticalScalar13 = ((sin(speed*(frameCount/FRAME_RATE + (d13/maxDistance)*numWavesFactor*PI)) + 1)/2);
+            float verticalScalar5 = (sin(speed*(frameCount/FRAME_RATE + (d5/maxDistance)*numWavesFactor*PI)) + 1)/2;
+            float verticalScalar7 = (sin(speed*(frameCount/FRAME_RATE + (d7/maxDistance)*numWavesFactor*PI)) + 1)/2;     
           
             Point p2, p3, p4, p6;
             p1 = new Point(centerx, centery - SHORT * verticalScalar13);
@@ -117,10 +146,10 @@ void draw(){
                         
             color mainColor = lerpColor(blue, yellow, colorFactor);
             color lighter = lerpColor(mainColor, white, 0.5);
-            color darker = lerpColor(mainColor, black, 0.2);
+            color darker = lerpColor(mainColor, black, 0.1);
             
             noStroke();
-            
+                        
             fill(darker);   
             quad(p1.x, p1.y, 
                 p4.x, p4.y, 
