@@ -34,7 +34,7 @@ public void createGUI() {
   parametersWindow = new GWindow(this, "Parameters", 0, 0, 240, 120, false, JAVA2D);
   parametersWindow.addDrawHandler(this, "parametersWindow");
   speedSlider = new GSlider(parametersWindow.papplet, 70, 40, 100, 40, 10.0);
-  speedSlider.setLimits(0.5, 0.0, 1.0);
+  speedSlider.setLimits(0.25, 0.0, 1.0);
   speedSlider.setNumberFormat(G4P.DECIMAL, 2);
   speedSlider.setOpaque(false);
   speedSlider.addEventHandler(this, "speedSliderChanged");
@@ -66,6 +66,12 @@ float ORIGINAL_LONG = 20;
 float EDGE = sqrt(pow(SHORT,2) + pow(LONG,2));
 
 int MAX_SPEED = 4;
+
+//Colors
+color blue = color(137,209,184);
+color yellow = color(204, 226, 189);
+color black = color(0);
+color white = color(255);
 
 // Main draw loop
 void draw(){
@@ -105,17 +111,29 @@ void draw(){
             p5 = new Point(centerx - LONG, centery + EDGE + SHORT * (1 - verticalScalar5));
             p6 = new Point(centerx, centery + SHORT + EDGE); 
             p7 = new Point(centerx + LONG, centery + EDGE + SHORT * (1 - verticalScalar7));
-
+            
+            float d3 = distance(p3, center);
+            float colorFactor = d3/maxDistance;
+                        
+            color mainColor = lerpColor(blue, yellow, colorFactor);
+            color lighter = lerpColor(mainColor, white, 0.5);
+            color darker = lerpColor(mainColor, black, 0.2);
+            
+            noStroke();
+            
+            fill(darker);   
             quad(p1.x, p1.y, 
                 p4.x, p4.y, 
                 p3.x, p3.y,
                 p2.x, p2.y);
 
+            fill(mainColor);
             quad(p3.x, p3.y, 
                 p4.x, p4.y, 
                 p7.x, p7.y, 
                 p6.x, p6.y);
-
+            
+            fill(lighter);
             quad(p3.x, p3.y, 
                 p2.x, p2.y, 
                 p5.x, p5.y, 
