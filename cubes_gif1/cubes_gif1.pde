@@ -22,6 +22,8 @@ ControlP5 cp5;
 ControlFrame cf;
 ColorPicker cp1;
 ColorPicker cp2;
+CheckBox checkBox;
+
 
 // Setup the Processing Canvas
 void setup(){
@@ -63,6 +65,11 @@ public class ControlFrame extends PApplet {
     cp5.addSlider("speedFactor", 0, 1, 0.25, 10, 10, 100, 10);
     cp5.addSlider("numWavesFactor", 0, 1, 0.25, 10, 30, 100, 10);
     cp5.addSlider("colorFactor", 1, 2, 1, 10, 50, 100, 10);
+    checkBox = cp5.addCheckBox("checkBox").setPosition(10, 210).setColorForeground(color(120))
+                .setColorActive(color(200))
+                .setColorLabel(color(255))
+                .setSize(20, 20)                
+                .addItem("0", 0);
     
     cp1 = cp5.addColorPicker("picker1")
           .setPosition(10, 70)
@@ -164,7 +171,7 @@ void draw(){
             p7 = new Point(centerx + LONG, centery + EDGE + SHORT * (1 - verticalScalar7));
             
             float d3 = distance(p3, center);
-            float colorFactor = d3/pow(maxDistance, cf.colorFactor);
+            float colorFactor = checkBox.getState(0) ? verticalScalar13 : d3/pow(maxDistance, cf.colorFactor);
             
             color color1 = cp1.getColorValue();
             color color2 = cp2.getColorValue();
