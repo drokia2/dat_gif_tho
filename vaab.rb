@@ -12,8 +12,12 @@ class Vaab < Sinatra::Base
    erb :murals
   end
 
-  get '/gifs' do
-    erb :gifs
+  get '/engines' do
+    erb :engines
+  end
+
+  get '/about' do
+    erb :about
   end
 end
 
