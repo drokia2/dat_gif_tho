@@ -1,7 +1,7 @@
 dat_gif_tho
 ===========
 
-Our mission is to create the most visually stimulating and aesthetic gifs
+Our mission is to create the most visually stimulating and aesthetic things
 
 
 [Venus As A Boy](http://venusasaboy.herokuapp.com/)
@@ -13,7 +13,7 @@ $ ruby run_vaab.rb
 
  localhost:4567
 
-##Pushing to app -------------
+##Pushing to app
 
 ###Heroku
 '''
