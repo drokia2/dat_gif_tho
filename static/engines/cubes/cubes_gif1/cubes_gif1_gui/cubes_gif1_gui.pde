@@ -132,7 +132,9 @@ color white = color(255);
 void draw(){
     background(0);
     smooth();
-
+    
+    println(frameRate);
+    
     int count = 0;
     Point center = new Point(width/2, height/2);
     float maxDistance = distance(center, new Point(0,0));
