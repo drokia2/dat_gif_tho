@@ -16,9 +16,14 @@ float distance(Point p1, Point p2) {
   return sqrt( pow(p2.y - p1.y,2) + pow( p2.x - p1.x,2) );
 }
 
+float distance(float x1, float x2, float y1, float y2) {
+  return sqrt( pow(y2 - y1,2) + pow( x2 - x1,2) );
+}
+
 int FRAME_RATE = 60;
 
 Point[] points;
+float[] xs, ys;
 int POINT_POOL_SIZE = 11;
 
 // Setup the Processing Canvas
@@ -27,8 +32,13 @@ void setup(){
   frameRate(FRAME_RATE);
   points = new Point[POINT_POOL_SIZE];
   
+  xs = new float[POINT_POOL_SIZE];
+  ys = new float[POINT_POOL_SIZE];
+  
   for (int i = 0; i < POINT_POOL_SIZE; i++) {
     points[i] = new Point(0,0);
+    xs[i] = 0;
+    ys[i] = 0;
   }
   //smooth();
 }
@@ -60,8 +70,7 @@ color white = color(255);
 
 // Main draw loop
 void draw(){
-    background(0);
-    smooth();    
+    background(0);       
     
     if (frameCount % 60 == 0) {
       println(frameRate);
@@ -76,16 +85,27 @@ void draw(){
         
         for (float centerx = begin; centerx < NUM_COLS*LONG*2; centerx += LONG*2) {                     
             
-            points[1].reset(centerx, centery - SHORT);
-            points[5].reset(centerx - LONG, centery + EDGE);
-            points[7].reset(centerx + LONG, centery + EDGE);
-            points[8].reset(points[1].x, points[1].y + SHORT); //middlep1p3
-            points[9].reset(points[7].x, points[7].y + SHORT); //destinationp7
-            points[10].reset(points[5].x, points[5].y + SHORT); //destinationp5
+            xs[1] = centerx;
+            ys[1] = centery - SHORT;
             
-            float d13 = distance(points[8], center);
-            float d7 = distance(points[9], center);
-            float d5 = distance(points[10], center);
+            xs[5] = centerx - LONG;
+            ys[5] = centery + EDGE;
+            
+            xs[7] = centerx + LONG;
+            ys[7] = centery + EDGE;
+            
+            xs[8] = xs[1]; 
+            ys[8] = ys[1] + SHORT; //middlep1p3
+            
+            xs[9] = xs[7]; 
+            ys[9] = ys[7] + SHORT; //destinationp7
+            
+            xs[10] = xs[5];
+            ys[10] = ys[5] + SHORT; //destinationp5
+            
+            float d13 = distance(xs[8], width/2, ys[8], height/2);
+            float d7 = distance(xs[9], width/2, ys[9], height/2);
+            float d5 = distance(xs[10], width/2, ys[10], height/2);
           
             float speed = cubesGUI.speed * MAX_SPEED;
             float numWavesFactor = cubesGUI.numWaves * MAX_NUM_WAVES;
@@ -95,15 +115,28 @@ void draw(){
             float verticalScalar5 = (sin(speed*(frameCount/FRAME_RATE + (d5/maxDistance)*numWavesFactor*PI)) + 1)/2;
             float verticalScalar7 = (sin(speed*(frameCount/FRAME_RATE + (d7/maxDistance)*numWavesFactor*PI)) + 1)/2;     
           
-            points[1].reset(centerx, centery - SHORT * verticalScalar13);
-            points[2].reset(centerx - LONG, centery);
-            points[3].reset(centerx, centery + SHORT * verticalScalar13);
-            points[4].reset(centerx + LONG, centery);
-            points[5].reset(centerx - LONG, centery + EDGE + SHORT * (1 - verticalScalar5));
-            points[6].reset(centerx, centery + SHORT + EDGE); 
-            points[7].reset(centerx + LONG, centery + EDGE + SHORT * (1 - verticalScalar7));
+            xs[1] = centerx;
+            ys[1] = centery - SHORT * verticalScalar13;
             
-            float d3 = distance(points[3], center);
+            xs[2] = centerx - LONG;
+            ys[2] = centery;
+            
+            xs[3] = centerx;
+            ys[3] = centery + SHORT * verticalScalar13;
+            
+            xs[4] = centerx + LONG;
+            ys[4] = centery;
+            
+            xs[5] = centerx - LONG;
+            ys[5] = centery + EDGE + SHORT * (1 - verticalScalar5);
+            
+            xs[6] = centerx;
+            ys[6] = centery + SHORT + EDGE;
+            
+            xs[7] = centerx + LONG;
+            ys[7] = centery + EDGE + SHORT * (1 - verticalScalar7);
+            
+            float d3 = distance(xs[3], width/2, ys[3], height/2);
             float colorFactor = cubesGUI.colorTravel ? verticalScalar13 : d3/pow(maxDistance, cubesGUI.colorFactor);
             
             color color1 = color(cubesGUI.color1[0], cubesGUI.color1[1], cubesGUI.color1[2]);
@@ -115,22 +148,22 @@ void draw(){
             noStroke();
                         
             fill(darker);   
-            quad(points[1].x, points[1].y, 
-                points[4].x, points[4].y, 
-                points[3].x, points[3].y,
-                points[2].x, points[2].y);
+            quad(xs[1], ys[1], 
+                xs[4], ys[4], 
+                xs[3], ys[3],
+                xs[2], ys[2]);
 
             fill(mainColor);
-            quad(points[3].x, points[3].y, 
-                points[4].x, points[4].y, 
-                points[7].x, points[7].y, 
-                points[6].x, points[6].y);
+            quad(xs[3], ys[3], 
+                xs[4], ys[4], 
+                xs[7], ys[7], 
+                xs[6], ys[6]);
             
             fill(lighter);
-            quad(points[3].x, points[3].y, 
-                points[2].x, points[2].y, 
-                points[5].x, points[5].y, 
-                points[6].x, points[6].y);
+            quad(xs[3], ys[3], 
+                xs[2], ys[2], 
+                xs[5], ys[5], 
+                xs[6], ys[6]);
 
         }        
         count++;

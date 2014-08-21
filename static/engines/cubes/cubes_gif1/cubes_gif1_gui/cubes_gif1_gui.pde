@@ -133,7 +133,6 @@ void draw(){
     background(0);
     smooth();
     
-    println(frameRate);
     
     int count = 0;
     Point center = new Point(width/2, height/2);

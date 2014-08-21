@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Walking Cubes</title>  
+  <script src="js/three.min.js"></script>
+  <script type="text/javascript" src="js/dat.gui.min.js"></script>
+</head>
+<body>
+	<script type="application/javascript">
+
+	  	var cubesGUI;
+
+	  	var WalkingCubesGUI = function() {
+		  this.speed = 0.25;
+		  this.numWaves = 0.25;
+		  this.colorFactor = 1;
+		  this.colorTravel = false;
+		  this.color1 = [ 137, 209, 184 ]; // RGB array
+		  this.color2 = [ 204, 226, 189 ]; // RGB array	  
+		};    
+
+	    window.onload = function() {
+			cubesGUI = new WalkingCubesGUI();
+			var gui = new dat.GUI();		
+			gui.add(cubesGUI, 'speed', 0, 1);
+			gui.add(cubesGUI, 'numWaves', 0, 1);
+			gui.add(cubesGUI, 'colorFactor', 0, 1);
+			gui.add(cubesGUI, 'colorTravel');
+			gui.addColor(cubesGUI, 'color1');
+			gui.addColor(cubesGUI, 'color2');
+
+
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+			var renderer = new THREE.WebGLRenderer();
+
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			var geometry = new THREE.Geometry();
+
+			var p1 = new THREE.Vector3(500,500,0);
+			var p2 = new THREE.Vector3(500,0,0);
+			var p3 = new THREE.Vector3(0,0,0);
+
+			geometry.vertices.push(p1);
+			geometry.vertices.push(p2);
+			geometry.vertices.push(p3);
+
+			var normal = new THREE.Vector3(0, 1, 0);
+			var color = new THREE.Color(0.5,0.5,0.5);
+
+			geometry.faces.push(new THREE.Face3(0,1,2));
+			geometry.computeFaceNormals();
+
+			console.log(geometry.faces);
+			console.log(geometry.vertices);
+
+			var object = new THREE.Mesh(geometry, new THREE.MeshNormalMaterial());
+			scene.add(object);
+
+			// var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+			// var cube = new THREE.Mesh( geometry, material );
+			// scene.add( cube );
+
+			camera.position.z = 100;
+
+			function render() {
+				requestAnimationFrame(render);
+				renderer.render(scene, camera);
+			}
+			render();
+		};
+
+	</script>  
+  
+</body>
+</html>
