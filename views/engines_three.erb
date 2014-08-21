@@ -31,7 +31,8 @@
 
 
 			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+			//var camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+			var camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 1, 1000 )
 			var renderer = new THREE.WebGLRenderer();
 
 			renderer.setSize( window.innerWidth, window.innerHeight );
@@ -39,24 +40,35 @@
 
 			var geometry = new THREE.Geometry();
 
-			var p1 = new THREE.Vector3(500,500,0);
-			var p2 = new THREE.Vector3(500,0,0);
-			var p3 = new THREE.Vector3(0,0,0);
+			var p1 = new THREE.Vector3(0,0,0);
+			var p2 = new THREE.Vector3(1,0,0);
+			var p3 = new THREE.Vector3(0,1,0);
+			var p4 = new THREE.Vector3(0,-1,0);
 
 			geometry.vertices.push(p1);
 			geometry.vertices.push(p2);
 			geometry.vertices.push(p3);
+			geometry.vertices.push(p4);
 
 			var normal = new THREE.Vector3(0, 1, 0);
 			var color = new THREE.Color(0.5,0.5,0.5);
 
 			geometry.faces.push(new THREE.Face3(0,1,2));
+			geometry.faces.push(new THREE.Face3(3,1,0));
 			geometry.computeFaceNormals();
 
 			console.log(geometry.faces);
 			console.log(geometry.vertices);
 
-			var object = new THREE.Mesh(geometry, new THREE.MeshNormalMaterial());
+			material_red = new THREE.MeshBasicMaterial( { 
+	            color: 0xff0000,	            
+        	});
+        	material_white = new THREE.MeshBasicMaterial( { 
+	            color: 0x000000,	            
+        	});
+        	geometry.materials = [material_red, material_white];
+
+			var object = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(geometry.materials));
 			scene.add(object);
 
 			// var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
