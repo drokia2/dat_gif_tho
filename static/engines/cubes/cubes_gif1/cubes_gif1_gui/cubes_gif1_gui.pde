@@ -103,20 +103,13 @@ public class ControlFrame extends PApplet {
   Object parent; 
 }
 
-int CUBE_WIDTH = 20;
 int NUM_ROWS = 30;
 int NUM_COLS = 30;
 int CANVAS_WIDTH = 600;
 int CANVAS_HEIGHT = 600;
-int TOP = 0;
-int LEFT = 0;
-int BACK = 0;
-float MARGINX = 15;
-float MARGINY = 10;
 
 int SHORT = 10;
 float LONG = 20;
-float ORIGINAL_LONG = 20;
 float EDGE = sqrt(pow(SHORT,2) + pow(LONG,2));
 
 int MAX_SPEED = 4;
@@ -128,11 +121,10 @@ color yellow = color(204, 226, 189);
 color black = color(0);
 color white = color(255);
 
-// Main draw loop
+//Main draw loop
 void draw(){
     background(0);
     smooth();
-    
     
     int count = 0;
     Point center = new Point(width/2, height/2);
@@ -141,7 +133,7 @@ void draw(){
     for (float centery = 0; centery < NUM_ROWS*EDGE; centery += EDGE+ SHORT) {      
         float begin = (count % 2) * LONG;
         
-        for (float centerx=begin; centerx < NUM_COLS*LONG*2; centerx += LONG*2) {                     
+        for (float centerx = begin; centerx < NUM_COLS*LONG*2; centerx += LONG*2) {                     
             
             Point p1 = new Point(centerx, centery - SHORT);
             Point p5 = new Point(centerx - LONG, centery + EDGE);

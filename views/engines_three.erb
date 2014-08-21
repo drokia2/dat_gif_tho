@@ -29,53 +29,127 @@
 			gui.addColor(cubesGUI, 'color1');
 			gui.addColor(cubesGUI, 'color2');
 
-
 			var scene = new THREE.Scene();
 			//var camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
-			var camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 1, 1000 )
+				
+			//SETUP
+			var aspectRatio = window.innerWidth / window.innerHeight;
+			var camera = new THREE.OrthographicCamera( 0, 100 * aspectRatio, 0, 100 , 1, 1000 )
 			var renderer = new THREE.WebGLRenderer();
 
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
+			
 
+			//CONSTANTS
+			var NUM_ROWS = 30;
+			var NUM_COLS = 30;
+			var SHORT = 5;
+			var LONG = 10;
+			var EDGE = Math.sqrt(Math.pow(SHORT,2) + Math.pow(LONG,2));
+			console.log(EDGE);
+
+			var MAX_SPEED = 4;
+			var MAX_NUM_WAVES = 8;
+
+			var count = 0;
+			var center = new THREE.Vector3(50,50,0);
+			var maxDistance = center.distanceTo(new THREE.Vector3(0,0,0));
+
+			var time = 0;
+
+			//GEOMETRY
 			var geometry = new THREE.Geometry();
 
-			var p1 = new THREE.Vector3(0,0,0);
-			var p2 = new THREE.Vector3(1,0,0);
-			var p3 = new THREE.Vector3(0,1,0);
-			var p4 = new THREE.Vector3(0,-1,0);
+			for (var centery = 50; centery < NUM_ROWS*EDGE; centery += EDGE+ SHORT) {      
+        		var begin = (count % 2) * LONG;
 
-			geometry.vertices.push(p1);
-			geometry.vertices.push(p2);
-			geometry.vertices.push(p3);
-			geometry.vertices.push(p4);
+        		//if (centery == 50) continue;        		
+        		debugger;
+        		for (var centerx = 50 + begin; centerx < NUM_COLS*LONG*2; centerx += LONG*2) {                     
+            		
+        			console.log(centerx);
+        			console.log(centery);
 
-			var normal = new THREE.Vector3(0, 1, 0);
-			var color = new THREE.Color(0.5,0.5,0.5);
+            		var p1 = new THREE.Vector3(centerx,centery - SHORT,0);		            
+		            var p5 = new THREE.Vector3(centerx - LONG, centery + EDGE,0);
+		            var p7 = new THREE.Vector3(centerx + LONG, centery + EDGE,0);
+		            var middlep1p3 = new THREE.Vector3(p1.x, p1.y + SHORT,0);
+		            var destinationp7 = new THREE.Vector3(p7.x, p7.y + SHORT,0);
+		            var destinationp5 = new THREE.Vector3(p5.x, p5.y + SHORT,0);
 
-			geometry.faces.push(new THREE.Face3(0,1,2));
-			geometry.faces.push(new THREE.Face3(3,1,0));
+		            var d13 = middlep1p3.distanceTo(center);
+            		var d7 = destinationp7.distanceTo(center);
+            		var d5 = destinationp5.distanceTo(center);
+
+            		var speed = 0.25 * MAX_SPEED;
+        		    var numWavesFactor = 0.25 * MAX_NUM_WAVES;
+           			 numWavesFactor = numWavesFactor + 1;
+
+           			var verticalScalar13 = ((Math.sin(speed*(time + (d13/maxDistance)*numWavesFactor*Math.PI)) + 1)/2);
+           			var verticalScalar5 = (Math.sin(speed*(time + (d5/maxDistance)*numWavesFactor*Math.PI)) + 1)/2;
+            		var verticalScalar7 = (Math.sin(speed*(time + (d7/maxDistance)*numWavesFactor*Math.PI)) + 1)/2;  
+
+            		var p2, p3, p4, p6;
+		            p1 = new THREE.Vector3(centerx, centery - SHORT /* verticalScalar13*/, 0);
+		            p2 = new THREE.Vector3(centerx - LONG, centery, 0);
+		            p3 = new THREE.Vector3(centerx, centery + SHORT /* verticalScalar13*/, 0);
+		            p4 = new THREE.Vector3(centerx + LONG, centery, 0);
+		            p5 = new THREE.Vector3(centerx - LONG, centery + EDGE); //+ SHORT /* (1 - verticalScalar5)*/, 0);
+		            p6 = new THREE.Vector3(centerx, centery + SHORT + EDGE, 0); 
+		            p7 = new THREE.Vector3(centerx + LONG, centery + EDGE); //+ SHORT /* (1 - verticalScalar7)*/, 0);
+
+		            var d3 = p3.distanceTo(center);
+		            var colorFactor = verticalScalar13;
+
+
+		            //COLORS
+		            var blue = new THREE.Color("rgb(137,209,184)");
+		            var yellow = new THREE.Color("rgb(204,226,189)");
+		            var white = new THREE.Color("rgb(255,255,255)");
+		            var black = new THREE.Color("rgb(0,0,0)");
+		            var mainColor = blue.clone().lerp(yellow,colorFactor);
+		            //var lighter = white.lerp(mainColor, 0.5);
+		            //var darker = black.lerp(mainColor, 0.5);
+
+		            geometry.vertices.push(p1);
+					geometry.vertices.push(p2);
+					geometry.vertices.push(p3);
+					geometry.vertices.push(p4);
+					geometry.vertices.push(p5);
+					geometry.vertices.push(p6);
+					geometry.vertices.push(p7);
+
+					var normal = new THREE.Vector3(1,0,0);
+
+					var indexCount = count * 7;
+					geometry.faces.push(new THREE.Face3(indexCount,indexCount + 1, indexCount + 3, normal, white, 0));
+					geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 2,indexCount + 3, normal, white, 0));
+					geometry.faces.push(new THREE.Face3(indexCount + 2,indexCount + 5,indexCount + 3, normal, blue, 0));
+					geometry.faces.push(new THREE.Face3(indexCount + 3,indexCount + 5,indexCount + 6, normal, blue, 0));
+					geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 5,indexCount + 2, normal, yellow, 0));
+					geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 4,indexCount + 5, normal, yellow, 0));
+					
+        		}
+
+        		count++;
+    		}
+
 			geometry.computeFaceNormals();
 
-			console.log(geometry.faces);
+			var material = new THREE.MeshBasicMaterial( { 
+			    color: 0xf0f0f0, 
+			    shading: THREE.FlatShading,
+			    vertexColors: THREE.FaceColors 
+			});			
+
 			console.log(geometry.vertices);
+			console.log(geometry.faces);
 
-			material_red = new THREE.MeshBasicMaterial( { 
-	            color: 0xff0000,	            
-        	});
-        	material_white = new THREE.MeshBasicMaterial( { 
-	            color: 0x000000,	            
-        	});
-        	geometry.materials = [material_red, material_white];
-
-			var object = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(geometry.materials));
+			var object = new THREE.Mesh(geometry, material);
 			scene.add(object);
 
-			// var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			// var cube = new THREE.Mesh( geometry, material );
-			// scene.add( cube );
-
-			camera.position.z = 100;
+			camera.position.z = 1000;
 
 			function render() {
 				requestAnimationFrame(render);
