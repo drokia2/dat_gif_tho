@@ -1,39 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Walking Cubes</title>
-  <script src="js/processing.min.js"></script>
-  <script type="text/javascript" src="js/dat.gui.min.js"></script>
+  <link href="css/engines.css" rel="stylesheet" />
 </head>
 <body>
-	<script type="application/javascript">
-
-	  	var cubesGUI;
-
-	  	var WalkingCubesGUI = function() {
-		  this.speed = 0.25;
-		  this.numWaves = 0.25;
-		  this.colorFactor = 1;
-		  this.colorTravel = false;
-		  this.color1 = [ 137, 209, 184 ]; // RGB array
-		  this.color2 = [ 204, 226, 189 ]; // RGB array	  
-		};    
-
-	    window.onload = function() {
-			cubesGUI = new WalkingCubesGUI();
-			var gui = new dat.GUI();		
-			gui.add(cubesGUI, 'speed', 0, 1);
-			gui.add(cubesGUI, 'numWaves', 0, 1);
-			gui.add(cubesGUI, 'colorFactor', 0, 1);
-			gui.add(cubesGUI, 'colorTravel');
-			gui.addColor(cubesGUI, 'color1');
-			gui.addColor(cubesGUI, 'color2');
-		};
-
-	</script>  
-  	
-  	<canvas data-processing-sources="engines/cubes/cubes_gif1/cubes_gif1_web/cubes_gif1_web.pde"></canvas>
-  
+<h1> ENGINES</h1>
+<h2> coming soon</h1>
   
 </body>
 </html>
