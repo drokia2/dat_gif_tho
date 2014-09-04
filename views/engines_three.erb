@@ -61,14 +61,14 @@
 			//GEOMETRY
 			var geometry = new THREE.Geometry();
 
-			for (var centery = 50; centery < NUM_ROWS*EDGE; centery += EDGE+ SHORT) {      
+			for (var centery = 0; centery < NUM_ROWS*EDGE; centery += EDGE+ SHORT) {      
         		var begin = (count % 2) * LONG;
 
         		//if (centery == 50) continue;        		
-        		debugger;
-        		for (var centerx = 50 + begin; centerx < NUM_COLS*LONG*2; centerx += LONG*2) {                     
+        		//debugger;
+        		for (var centerx = begin; centerx < NUM_COLS*LONG*2; centerx += LONG*2) {                     
             		
-        			console.log(centerx);
+        			//console.log(centerx);
         			console.log(centery);
 
             		var p1 = new THREE.Vector3(centerx,centery - SHORT,0);		            

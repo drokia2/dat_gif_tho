@@ -1,14 +1,20 @@
+@font-face {
+    font-family: 'DIN'; /*a name to be used later*/
+    src: url('../fonts/DIN-Light.otf'); /*URL to font*/
+}
+
 body {
   text-align: center;
   background-color: #000000;
+  font-family: 'DIN';
 }
 
 h1 {
-  font-size:64px;
-  text-align: center;
-  font-family: "Palatino";
   color: #ffffff;
-
+  font-size: 64px;
+  vertical-align: middle;
+  text-align: center;
+  margin-top: 42px;
 }
 
 .mural_main {
