@@ -4,5 +4,27 @@
   text-align:left;
   font-size: 24px;
   left: 10%;
-  bottom: 20%;
+  bottom: 5%;
+}
+
+.color_box {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+}
+
+
+
+#adriana_pic {
+  background-color:#C7301D;
+  left:25%;
+  top:32%;
+
+}
+
+#johan_pic {
+  background-color:#94C2DA;
+  right:25%;
+  top:32%;
+
 }
