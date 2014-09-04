@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'DIN'; /*a name to be used later*/
+    src: url('../fonts/DIN-Light.otf'); /*URL to font*/
+}
+
+body {
+  text-align: center;
+  background-color: #000000;
+  font-family: 'DIN';
+}
+
+h1 {
+  color: #ffffff;
+  font-size: 64px;
+  vertical-align: middle;
+  text-align: center;
+  margin-top: 42px;
+}
+
+a {
+	font-size: 24;
+	color: white;
+	text-decoration: none;
+}
+
+h2 {
+  color: #ffffff;
+  font-size: 36px;
+  text-align:center;
+}
