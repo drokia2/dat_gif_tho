@@ -19,6 +19,10 @@ class Vaab < Sinatra::Base
   get '/about' do
     erb :about
   end
+
+  get '/shit' do
+    erb :engines_three
+  end
 end
 
 
