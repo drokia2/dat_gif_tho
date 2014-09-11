@@ -42,8 +42,8 @@
 			
 
 			//CONSTANTS
-			var NUM_ROWS = 4;
-			var NUM_COLS = 2;
+			var NUM_ROWS = 6;
+			var NUM_COLS = 15;
 			var SHORT = 5;
 			var LONG = 10;
 			var EDGE = Math.sqrt(Math.pow(SHORT,2) + Math.pow(LONG,2));
@@ -99,13 +99,13 @@
             		var verticalScalar7 = (Math.sin(speed*(time + (d7/maxDistance)*numWavesFactor*Math.PI)) + 1)/2;  
 
             		var p2, p3, p4, p6;
-		            p1 = new THREE.Vector3(centerx, centery - SHORT /* verticalScalar13*/, 0);
+		            p1 = new THREE.Vector3(centerx, centery - SHORT * verticalScalar13, 0);
 		            p2 = new THREE.Vector3(centerx - LONG, centery, 0);
-		            p3 = new THREE.Vector3(centerx, centery + SHORT /* verticalScalar13*/, 0);
+		            p3 = new THREE.Vector3(centerx, centery + SHORT * verticalScalar13, 0);
 		            p4 = new THREE.Vector3(centerx + LONG, centery, 0);
-		            p5 = new THREE.Vector3(centerx - LONG, centery + EDGE); //+ SHORT /* (1 - verticalScalar5)*/, 0);
+		            p5 = new THREE.Vector3(centerx - LONG, centery + EDGE + SHORT * (1 - verticalScalar5), 0);
 		            p6 = new THREE.Vector3(centerx, centery + SHORT + EDGE, 0); 
-		            p7 = new THREE.Vector3(centerx + LONG, centery + EDGE); //+ SHORT /* (1 - verticalScalar7)*/, 0);
+		            p7 = new THREE.Vector3(centerx + LONG, centery + EDGE + SHORT * (1 - verticalScalar7), 0);
 
 		            var d3 = p3.distanceTo(center);
 		            var colorFactor = verticalScalar13;
@@ -155,7 +155,7 @@
 			var box_grid = new THREE.Mesh(geometry, material);
 			scene.add(box_grid);
 
-      camera.position.x = -50;
+      camera.position.x = -30;
 			camera.position.z = 1000;
       console.log("length");
 			console.log(geometry.faces.length);
