@@ -14,6 +14,7 @@
 	  	var material;
 	  	var renderer;
 	  	var camera;
+	  	var box_grid;
 
 	  	var WalkingCubesGUI = function() {
 	        this.speed = 0.25;
@@ -72,7 +73,6 @@
 			var EDGE = Math.sqrt(Math.pow(SHORT,2) + Math.pow(LONG,2));
 			var ROW_HEIGHT = EDGE + SHORT;
 			var COL_WIDTH = LONG *2;
-			console.log(EDGE);
 
 			var MAX_SPEED = 4;
 			var MAX_NUM_WAVES = 8;
@@ -103,7 +103,7 @@
             		var d7 = destinationp7.distanceTo(center);
             		var d5 = destinationp5.distanceTo(center);
 
-            		var speed = 0.25 * MAX_SPEED;
+            		var speed = 0.0001 * MAX_SPEED;
         		    var numWavesFactor = 0.25 * MAX_NUM_WAVES;
            			 numWavesFactor = numWavesFactor + 1;
 
@@ -160,18 +160,19 @@
     	};
 
     	function animate() {
+
     		requestAnimationFrame( animate );
-			var time = Date.now();
-			updateGeometry(time);
-			render();
+			  var time = Date.now();
+			  updateGeometry(time);
+			  render();
+			  //console.log(time);
     	};
 
     	function render() {
     		geometry.verticesNeedUpdate = true;    			
-
-			var box_grid = new THREE.Mesh(geometry, material);
-			scene.add(box_grid);
-
+    		scene.remove(box_grid);
+			  box_grid = new THREE.Mesh(geometry, material);
+			  scene.add(box_grid);
     		renderer.render(scene, camera);
     	};		    
 
