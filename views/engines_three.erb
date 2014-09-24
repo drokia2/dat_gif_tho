@@ -14,7 +14,7 @@
 	  	var material;
 	  	var renderer;
 	  	var camera;
-	  	var box_grid;
+	  	var box_grid;	  	
 
 	  	var WalkingCubesGUI = function() {
 	        this.speed = 0.25;
@@ -67,9 +67,9 @@
 
     		//CONSTANTS
 			var NUM_ROWS = 6;
-			var NUM_COLS = 15;
-			var SHORT = 5;
-			var LONG = 10;
+			var NUM_COLS = 10;
+			var SHORT = 2;
+			var LONG = 4;
 			var EDGE = Math.sqrt(Math.pow(SHORT,2) + Math.pow(LONG,2));
 			var ROW_HEIGHT = EDGE + SHORT;
 			var COL_WIDTH = LONG *2;
@@ -101,15 +101,18 @@
 
 		            var d13 = middlep1p3.distanceTo(center);
             		var d7 = destinationp7.distanceTo(center);
-            		var d5 = destinationp5.distanceTo(center);
+            		var d5 = destinationp5.distanceTo(center);                    
 
-            		var speed = 0.0001 * MAX_SPEED;
+            		var speed = 0.0003 * MAX_SPEED;
         		    var numWavesFactor = 0.25 * MAX_NUM_WAVES;
-           			 numWavesFactor = numWavesFactor + 1;
+           			 numWavesFactor = numWavesFactor + 1;               
+                    var BOOST = 1000;      
 
-           			var verticalScalar13 = ((Math.sin(speed*(time + (d13/maxDistance)*numWavesFactor*Math.PI)) + 1)/2);
-           			var verticalScalar5 = (Math.sin(speed*(time + (d5/maxDistance)*numWavesFactor*Math.PI)) + 1)/2;
-            		var verticalScalar7 = (Math.sin(speed*(time + (d7/maxDistance)*numWavesFactor*Math.PI)) + 1)/2;  
+           			var verticalScalar13 = ((Math.sin(speed*(time + BOOST*(d13/maxDistance)*numWavesFactor*Math.PI)) + 1)/2);
+           			var verticalScalar5 = (Math.sin(speed*(time + BOOST*(d5/maxDistance)*numWavesFactor*Math.PI)) + 1)/2;
+            		var verticalScalar7 = (Math.sin(speed*(time + BOOST*(d7/maxDistance)*numWavesFactor*Math.PI)) + 1)/2;  
+
+                    //console.log("verticalScalar: " + verticalScalar13);
 
             		var p2, p3, p4, p6;
 		            p1 = new THREE.Vector3(centerx, centery - SHORT * verticalScalar13, 0);
@@ -157,6 +160,15 @@
         		row_count++;
 
     		}
+			  
+		    var red = new THREE.Color("rgb(255,0,0)");
+            var normal = new THREE.Vector3(1,0,0);
+            geometry.vertices.push(new THREE.Vector3(center.x, center.y, 0));
+            geometry.vertices.push(new THREE.Vector3(center.x - 5, center.y - 5, 0));
+            geometry.vertices.push(new THREE.Vector3(center.x + 5, center.y - 5, 0));
+
+            var numVertices = geometry.vertices.length;
+            geometry.faces.push(new THREE.Face3(numVertices - 1, numVertices - 2, numVertices - 3,normal,red,0));
     	};
 
     	function animate() {
@@ -171,8 +183,8 @@
     	function render() {
     		geometry.verticesNeedUpdate = true;    			
     		scene.remove(box_grid);
-			  box_grid = new THREE.Mesh(geometry, material);
-			  scene.add(box_grid);
+			box_grid = new THREE.Mesh(geometry, material);		
+			scene.add(box_grid);			 
     		renderer.render(scene, camera);
     	};		    
 
