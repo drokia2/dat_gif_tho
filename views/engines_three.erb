@@ -4,6 +4,7 @@
   <title>Walking Cubes</title>  
   <script src="js/three.min.js"></script>
   <script type="text/javascript" src="js/dat.gui.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/cubes.css"/>
 </head>
 <body>
 	<script type="application/javascript">
@@ -168,15 +169,7 @@
         		row_count++;
 
     		}
-			  
-		    var red = new THREE.Color("rgb(255,0,0)");
-            var normal = new THREE.Vector3(1,0,0);
-            geometry.vertices.push(new THREE.Vector3(center.x, center.y, 0));
-            geometry.vertices.push(new THREE.Vector3(center.x - 5, center.y - 5, 0));
-            geometry.vertices.push(new THREE.Vector3(center.x + 5, center.y - 5, 0));
 
-            var numVertices = geometry.vertices.length;
-            geometry.faces.push(new THREE.Face3(numVertices - 1, numVertices - 2, numVertices - 3,normal,red,0));
     	};
 
     	function animate() {
