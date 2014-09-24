@@ -14,7 +14,9 @@
 	  	var material;
 	  	var renderer;
 	  	var camera;
-	  	var box_grid;	  	
+	  	var box_grid;	
+        var dim_x;
+        var dim_y;  	
 
 	  	var WalkingCubesGUI = function() {
 	        this.speed = 0.25;
@@ -46,7 +48,9 @@
 				
 			//SETUP
 			var aspectRatio = window.innerWidth / window.innerHeight;
-			camera = new THREE.OrthographicCamera( 0, 100 * aspectRatio, 0, 100 , 1, 1000 )
+            dim_x = 100 *aspectRatio;
+            dim_y = 100;
+			camera = new THREE.OrthographicCamera( 0, dim_x, 0, dim_y , 1, 1000 )
 			renderer = new THREE.WebGLRenderer();
 
 			renderer.setSize( window.innerWidth, window.innerHeight );
@@ -58,7 +62,6 @@
 			    vertexColors: THREE.FaceColors 
 			});		
 
-      		camera.position.x = -30;
 			camera.position.z = 1000; 
 
     	};
@@ -66,29 +69,34 @@
     	function updateGeometry(time) {
 
     		//CONSTANTS
-			var NUM_ROWS = 6;
-			var NUM_COLS = 10;
+
 			var SHORT = 2;
 			var LONG = 4;
-			var EDGE = Math.sqrt(Math.pow(SHORT,2) + Math.pow(LONG,2));
-			var ROW_HEIGHT = EDGE + SHORT;
-			var COL_WIDTH = LONG *2;
+            var EDGE = Math.sqrt(Math.pow(SHORT,2) + Math.pow(LONG,2));
+            var ROW_HEIGHT = EDGE + SHORT;
+            var COL_WIDTH = LONG *2;
+            var NUM_ROWS = dim_y / (ROW_HEIGHT);
+            var NUM_COLS = dim_x / (COL_WIDTH) + 1;
+            console.log("NUM_ROWS " + NUM_ROWS);
+            console.log("NUM_COLS " + NUM_COLS);
+
 
 			var MAX_SPEED = 4;
 			var MAX_NUM_WAVES = 8;
 
 			var count = 0;
-			var center = new THREE.Vector3(50,50,0);
+			var center = new THREE.Vector3(dim_x/2,dim_y/2,0);
 			var maxDistance = center.distanceTo(new THREE.Vector3(0,0,0));
 
 			//GEOMETRY
 			geometry = new THREE.Geometry();
 
-			var y_begin = 10;
+			var y_begin = 0;
+            var x_begin = -50;
 			var row_count = 0;
 
 			for (var centery = y_begin; centery < y_begin+NUM_ROWS*ROW_HEIGHT; centery += ROW_HEIGHT) {      
-        		var begin = (row_count % 2) * LONG;
+        		var begin = (row_count % 2) * LONG + x_begin;
         		
         		for (var centerx = begin; centerx < NUM_COLS*COL_WIDTH; centerx +=COL_WIDTH) {                     
 
