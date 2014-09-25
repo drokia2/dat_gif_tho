@@ -20,12 +20,11 @@
         var dim_y;  	
 
 	  	var WalkingCubesGUI = function() {
-	        this.speed = 0.25;
-	        this.numWaves = 0.25;
+	        this.speed = 0.0003;	        
 	        this.colorFactor = 1;
 	        this.colorTravel = false;
-	        this.color1 = [ 137, 209, 184 ]; // RGB array
-	        this.color2 = [ 204, 226, 189 ]; // RGB array	  
+	        this.color1 = "#89d1b8";
+	        this.color2 = "#cce2bd";   
       	};    
 
 	    window.onload = function() {
@@ -37,8 +36,7 @@
 		function init() {			
 			cubesGUI = new WalkingCubesGUI();
 			var gui = new dat.GUI();		
-			gui.add(cubesGUI, 'speed', 0, 1);
-			gui.add(cubesGUI, 'numWaves', 0, 1);
+			gui.add(cubesGUI, 'speed', 0, 0.001);			
 			gui.add(cubesGUI, 'colorFactor', 0, 1);
 			gui.add(cubesGUI, 'colorTravel');
 			gui.addColor(cubesGUI, 'color1');
@@ -77,10 +75,7 @@
             var ROW_HEIGHT = EDGE + SHORT;
             var COL_WIDTH = LONG *2;
             var NUM_ROWS = dim_y / (ROW_HEIGHT);
-            var NUM_COLS = dim_x / (COL_WIDTH) + 1;
-            console.log("NUM_ROWS " + NUM_ROWS);
-            console.log("NUM_COLS " + NUM_COLS);
-
+            var NUM_COLS = dim_x / (COL_WIDTH) + 1;            
 
 			var MAX_SPEED = 4;
 			var MAX_NUM_WAVES = 8;
@@ -111,17 +106,13 @@
 		            var d13 = middlep1p3.distanceTo(center);
             		var d7 = destinationp7.distanceTo(center);
             		var d5 = destinationp5.distanceTo(center);                    
-
-            		var speed = 0.0003 * MAX_SPEED;
-        		    var numWavesFactor = 0.25 * MAX_NUM_WAVES;
-           			 numWavesFactor = numWavesFactor + 1;               
+            		var speed = cubesGUI.speed * MAX_SPEED;                       
                     var BOOST = 1000;      
 
-           			var verticalScalar13 = ((Math.sin(speed*(time + BOOST*(d13/maxDistance)*numWavesFactor*Math.PI)) + 1)/2);
-           			var verticalScalar5 = (Math.sin(speed*(time + BOOST*(d5/maxDistance)*numWavesFactor*Math.PI)) + 1)/2;
-            		var verticalScalar7 = (Math.sin(speed*(time + BOOST*(d7/maxDistance)*numWavesFactor*Math.PI)) + 1)/2;  
+           			var verticalScalar13 = ((Math.sin(speed*(time + BOOST*(d13/maxDistance)*3*Math.PI)) + 1)/2);
+           			var verticalScalar5 = (Math.sin(speed*(time + BOOST*(d5/maxDistance)*3*Math.PI)) + 1)/2;
+            		var verticalScalar7 = (Math.sin(speed*(time + BOOST*(d7/maxDistance)*3*Math.PI)) + 1)/2;  
 
-                    //console.log("verticalScalar: " + verticalScalar13);
 
             		var p2, p3, p4, p6;
 		            p1 = new THREE.Vector3(centerx, centery - SHORT * verticalScalar13, 0);
@@ -133,17 +124,16 @@
 		            p7 = new THREE.Vector3(centerx + LONG, centery + EDGE + SHORT * (1 - verticalScalar7), 0);
 
 		            var d3 = p3.distanceTo(center);
-		            var colorFactor = verticalScalar13;
+		            var colorFactor = cubesGUI.colorTravel ? verticalScalar13 : d3/Math.pow(maxDistance, cubesGUI.colorFactor);
 
-
-		            //COLORS
-		            var blue = new THREE.Color("rgb(137,209,184)");
-		            var yellow = new THREE.Color("rgb(204,226,189)");
+		            //COLORS		            	           
+		            var color1 = new THREE.Color(cubesGUI.color1);
+		            var color2 = new THREE.Color(cubesGUI.color2);
 		            var white = new THREE.Color("rgb(255,255,255)");
 		            var black = new THREE.Color("rgb(0,0,0)");
-		            var mainColor = blue.clone().lerp(yellow,colorFactor);
-		            //var lighter = white.lerp(mainColor, 0.5);
-		            //var darker = black.lerp(mainColor, 0.5);
+		            var mainColor = color1.clone().lerp(color2,colorFactor);
+		            var lighter = white.lerp(mainColor, 0.5);
+		            var darker = black.lerp(mainColor, 0.9);
 
 		            geometry.vertices.push(p1);
 	                geometry.vertices.push(p2);
@@ -156,12 +146,18 @@
                 	var normal = new THREE.Vector3(1,0,0);
 
 	                var indexCount = count * 7;
-	                geometry.faces.push(new THREE.Face3(indexCount,indexCount + 1, indexCount + 3, normal, white, 0));
-	                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 2,indexCount + 3, normal, white, 0));
-	                geometry.faces.push(new THREE.Face3(indexCount + 2,indexCount + 5,indexCount + 3, normal, blue, 0));
-	                geometry.faces.push(new THREE.Face3(indexCount + 3,indexCount + 5,indexCount + 6, normal, blue, 0));
-	                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 5,indexCount + 2, normal, yellow, 0));
-	                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 4,indexCount + 5, normal, yellow, 0));
+
+	                //top fcae
+	                geometry.faces.push(new THREE.Face3(indexCount,indexCount + 1, indexCount + 3, normal, darker, 0));
+	                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 2,indexCount + 3, normal, darker, 0));
+	                
+	                //right face
+	                geometry.faces.push(new THREE.Face3(indexCount + 2,indexCount + 5,indexCount + 3, normal, mainColor, 0));
+	                geometry.faces.push(new THREE.Face3(indexCount + 3,indexCount + 5,indexCount + 6, normal, mainColor, 0));
+	                
+	                //left face
+	                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 5,indexCount + 2, normal, lighter, 0));
+	                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 4,indexCount + 5, normal, lighter, 0));
                 
         		    count++;
         		}
@@ -182,7 +178,8 @@
     	};
 
     	function render() {
-    		geometry.verticesNeedUpdate = true;    			
+    		// geometry.verticesNeedUpdate = true;
+    		// geometry.facesNeedUpdate = true;    			
     		scene.remove(box_grid);
 			box_grid = new THREE.Mesh(geometry, material);		
 			scene.add(box_grid);			 
