@@ -9,28 +9,28 @@
 <body>
 	<script type="application/javascript">
 
-	  	var cubesGUI;
-	  	var geometry;
-	  	var scene;
-	  	var material;
-	  	var renderer;
-	  	var camera;
-	  	var box_grid;	
-        var dim_x;
-        var dim_y;  	
+    var cubesGUI;
+    var geometry;
+    var scene;
+    var material;
+    var renderer;
+    var camera;
+    var box_grid;	
+    var dim_x;
+    var dim_y;  	
 
-	  	var WalkingCubesGUI = function() {
-	        this.speed = 0.0003;	        
-	        this.colorFactor = 1;
-	        this.colorTravel = false;
-	        this.color1 = "#89d1b8";
-	        this.color2 = "#cce2bd";   
-      	};    
+    var WalkingCubesGUI = function() {
+        this.speed = 0.0003;	        
+        this.colorFactor = 1;
+        this.colorTravel = false;
+        this.color1 = "#89d1b8";
+        this.color2 = "#cce2bd";   
+      };    
 
-	    window.onload = function() {
+    window.onload = function() {
 
-	    	init();
-	    	animate();
+      init();
+      animate();
 		};
 
 		function init() {			
@@ -41,14 +41,12 @@
 			gui.add(cubesGUI, 'colorTravel');
 			gui.addColor(cubesGUI, 'color1');
 			gui.addColor(cubesGUI, 'color2');
-
 			scene = new THREE.Scene();
-			//var camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
 				
 			//SETUP
 			var aspectRatio = window.innerWidth / window.innerHeight;
-            dim_x = 100 *aspectRatio;
-            dim_y = 100;
+      dim_x = 100 *aspectRatio;
+      dim_y = 100;
 			camera = new THREE.OrthographicCamera( 0, dim_x, 0, dim_y , 1, 1000 )
 			renderer = new THREE.WebGLRenderer();
 
@@ -63,19 +61,19 @@
 
 			camera.position.z = 1000; 
 
-    	};
+    };
 
-    	function updateGeometry(time) {
+    function updateGeometry(time) {
 
     		//CONSTANTS
 
 			var SHORT = 2;
 			var LONG = 4;
-            var EDGE = Math.sqrt(Math.pow(SHORT,2) + Math.pow(LONG,2));
-            var ROW_HEIGHT = EDGE + SHORT;
-            var COL_WIDTH = LONG *2;
-            var NUM_ROWS = dim_y / (ROW_HEIGHT);
-            var NUM_COLS = dim_x / (COL_WIDTH) + 1;            
+      var EDGE = Math.sqrt(Math.pow(SHORT,2) + Math.pow(LONG,2));
+      var ROW_HEIGHT = EDGE + SHORT;
+      var COL_WIDTH = LONG *2;
+      var NUM_ROWS = dim_y / (ROW_HEIGHT);
+      var NUM_COLS = dim_x / (COL_WIDTH) + 1;            
 
 			var MAX_SPEED = 4;
 			var MAX_NUM_WAVES = 8;
@@ -88,7 +86,7 @@
 			geometry = new THREE.Geometry();
 
 			var y_begin = 0;
-            var x_begin = -50;
+      var x_begin = -50;
 			var row_count = 0;
 
 			for (var centery = y_begin; centery < y_begin+NUM_ROWS*ROW_HEIGHT; centery += ROW_HEIGHT) {      
@@ -107,7 +105,7 @@
             		var d7 = destinationp7.distanceTo(center);
             		var d5 = destinationp5.distanceTo(center);                    
             		var speed = cubesGUI.speed * MAX_SPEED;                       
-                    var BOOST = 1000;      
+                var BOOST = 1000;      
 
            			var verticalScalar13 = ((Math.sin(speed*(time + BOOST*(d13/maxDistance)*3*Math.PI)) + 1)/2);
            			var verticalScalar5 = (Math.sin(speed*(time + BOOST*(d5/maxDistance)*3*Math.PI)) + 1)/2;
@@ -136,28 +134,28 @@
 		            var darker = black.lerp(mainColor, 0.9);
 
 		            geometry.vertices.push(p1);
-	                geometry.vertices.push(p2);
-	                geometry.vertices.push(p3);
-	                geometry.vertices.push(p4);
-	                geometry.vertices.push(p5);
-	                geometry.vertices.push(p6);
-	                geometry.vertices.push(p7);
+                geometry.vertices.push(p2);
+                geometry.vertices.push(p3);
+                geometry.vertices.push(p4);
+                geometry.vertices.push(p5);
+                geometry.vertices.push(p6);
+                geometry.vertices.push(p7);
 
-                	var normal = new THREE.Vector3(1,0,0);
+                var normal = new THREE.Vector3(1,0,0);
 
-	                var indexCount = count * 7;
+                var indexCount = count * 7;
 
-	                //top fcae
-	                geometry.faces.push(new THREE.Face3(indexCount,indexCount + 1, indexCount + 3, normal, darker, 0));
-	                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 2,indexCount + 3, normal, darker, 0));
-	                
-	                //right face
-	                geometry.faces.push(new THREE.Face3(indexCount + 2,indexCount + 5,indexCount + 3, normal, mainColor, 0));
-	                geometry.faces.push(new THREE.Face3(indexCount + 3,indexCount + 5,indexCount + 6, normal, mainColor, 0));
-	                
-	                //left face
-	                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 5,indexCount + 2, normal, lighter, 0));
-	                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 4,indexCount + 5, normal, lighter, 0));
+                //top fcae
+                geometry.faces.push(new THREE.Face3(indexCount,indexCount + 1, indexCount + 3, normal, darker, 0));
+                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 2,indexCount + 3, normal, darker, 0));
+                
+                //right face
+                geometry.faces.push(new THREE.Face3(indexCount + 2,indexCount + 5,indexCount + 3, normal, mainColor, 0));
+                geometry.faces.push(new THREE.Face3(indexCount + 3,indexCount + 5,indexCount + 6, normal, mainColor, 0));
+                
+                //left face
+                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 5,indexCount + 2, normal, lighter, 0));
+                geometry.faces.push(new THREE.Face3(indexCount + 1,indexCount + 4,indexCount + 5, normal, lighter, 0));
                 
         		    count++;
         		}
@@ -174,15 +172,12 @@
 			  var time = Date.now();
 			  updateGeometry(time);
 			  render();
-			  //console.log(time);
     	};
 
     	function render() {
-    		// geometry.verticesNeedUpdate = true;
-    		// geometry.facesNeedUpdate = true;    			
     		scene.remove(box_grid);
-			box_grid = new THREE.Mesh(geometry, material);		
-			scene.add(box_grid);			 
+        box_grid = new THREE.Mesh(geometry, material);		
+        scene.add(box_grid);			 
     		renderer.render(scene, camera);
     	};		    
 
