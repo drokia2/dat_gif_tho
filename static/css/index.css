@@ -1,9 +1,8 @@
 .centered {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-top: -300px;
-  margin-left: -300px;
+  top: 30%;
+  left: 43%;
+  width: 14%;
 }
 
 #menu ul { 
