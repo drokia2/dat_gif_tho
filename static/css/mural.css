@@ -15,7 +15,31 @@
 
 }
 
-.mural_div {
-  text-align:center;
+.murals {
+  position: relative;
+  text-align:left;
+  float:left;
 }
 
+
+.mural_image {
+  width: 100px;
+  height: auto;
+  box-shadow: 0 0 50px #555;
+  border-radius:100px;
+}
+
+ul {
+  list-style: none;
+  font-size: 0px;
+}
+
+li {
+  display: inline-block;
+  padding: 0px;
+  margin: 7%;
+  font-size: 16px;
+  font-size: 1rem;
+  vertical-align: top;
+  border-radius:100px;
+}

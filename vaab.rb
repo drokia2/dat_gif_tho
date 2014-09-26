@@ -23,6 +23,20 @@ class Vaab < Sinatra::Base
   get '/engine_00000' do
     erb :engines_three
   end
+
+  get '/mural_00000' do
+    erb :mural_00000
+  end
+
+  get '/mural_00001' do
+    erb :mural_00001
+  end
+
+  get '/next_mural' do
+    erb :next_mural
+  end
+
+
 end
 
 
