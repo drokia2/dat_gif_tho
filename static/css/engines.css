@@ -1,7 +1,8 @@
-.engine {
-  text-align: left;
-}
 
+.engine_image {
+  width: 100px;
+  height: auto;
+}
 
 .engines {
   padding-left:5%;
