@@ -8,3 +8,21 @@
   padding-left:5%;
   text-align: left;
 }
+
+
+ul {
+  float: left;
+  list-style: none;
+  font-size: 0px;
+  margin-left: 15%;
+}
+
+li {
+  display: inline-block;
+  padding: 0px;
+  margin: 7%;
+  font-size: 16px;
+  font-size: 1rem;
+  vertical-align: top;
+  border-radius:100px;
+}

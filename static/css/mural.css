@@ -15,14 +15,7 @@
 
 }
 
-.murals {
-  position: relative;
-  text-align:left;
-  float:left;
-}
-
-
-.mural_image {
+.mural_icon {
   width: 100px;
   height: auto;
   box-shadow: 0 0 50px #555;
