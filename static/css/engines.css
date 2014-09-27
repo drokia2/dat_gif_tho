@@ -26,3 +26,9 @@ li {
   vertical-align: top;
   border-radius:100px;
 }
+
+.fullscreen_icon {
+  position:absolute;
+  right: 10px;
+  bottom: 10px;
+}

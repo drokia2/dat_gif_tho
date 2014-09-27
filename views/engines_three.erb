@@ -7,6 +7,40 @@
   <link rel="stylesheet" type="text/css" href="css/cubes.css"/>
 </head>
 <body>
+  <style type="text/css">
+    .video_player:-webkit-full-screen {
+      width: 100%;
+      height: 100%;
+    }
+    .video_player:-moz-full-screen {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <button class="fullscreen_icon" onclick='goFullscreen("canvasID")'>
+    <img  src="images/fullscreen_icon.png"/>
+  </button>
+  <canvas class="video_player" id="canvasID"></canvas>
+  <script type="text/javascript">
+      function goFullscreen(id) {
+        // Get the element that we want to take into fullscreen mode
+        var element = document.getElementById(id);
+
+        // These function will not exist in the browsers that don't support fullscreen mode yet, 
+        // so we'll have to check to see if they're available before calling them.
+
+        if (element.mozRequestFullScreen) {
+          // This is how to go into fullscren mode in Firefox
+          // Note the "moz" prefix, which is short for Mozilla.
+          element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullScreen) {
+          // This is how to go into fullscreen mode in Chrome and Safari
+          // Both of those browsers are based on the Webkit project, hence the same prefix.
+          element.webkitRequestFullScreen();
+        }
+        // Hooray, now we're in fullscreen mode!
+      }
+  </script>
 	<script type="application/javascript">
 
     var cubesGUI;
@@ -48,7 +82,8 @@
       dim_x = 100 *aspectRatio;
       dim_y = 100;
 			camera = new THREE.OrthographicCamera( 0, dim_x, 0, dim_y , 1, 1000 )
-			renderer = new THREE.WebGLRenderer();
+			var canvas = document.getElementById("canvasID");
+			renderer = new THREE.WebGLRenderer({ canvas: canvas });
 
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );						
