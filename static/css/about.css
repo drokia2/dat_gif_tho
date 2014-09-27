@@ -1,30 +1,29 @@
-.email{
-  position: absolute;
-  color: white;
-  text-align:left;
-  font-size: 24px;
-  left: 10%;
-  bottom: 5%;
+body {
+  font-size: 22px;
 }
 
-.color_box {
-  position: absolute;
+.profile_pic {
   width: 200px;
-  height: 200px;
+  height: auto;
+  border-radius:200px;
+  padding: 20px;
 }
 
-
-
-#adriana_pic {
-  background-color:#C7301D;
-  left:25%;
-  top:32%;
-
+.network_icon {
+  width: 50px;
+  height: auto;
 }
 
-#johan_pic {
-  background-color:#94C2DA;
-  right:25%;
-  top:32%;
+.social_networks {
+  padding:20px;
+}
 
+.bio {
+  padding:50px;
+  text-align: left; 
+  font-size: 18px;
+}
+
+.spacer {
+  margin: 50px;
 }
