@@ -16,7 +16,7 @@
 }
 
 .mural_icon {
-  width: 100px;
+  width: 200px;
   height: auto;
   box-shadow: 0 0 50px #555;
   border-radius:100px;
@@ -35,4 +35,9 @@ li {
   font-size: 1rem;
   vertical-align: top;
   border-radius:100px;
+}
+
+.murals {  
+  text-align: center;
+  width: 100%;
 }

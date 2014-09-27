@@ -21,7 +21,7 @@ class Vaab < Sinatra::Base
   end
 
   get '/engine_00000' do
-    erb :engines_three
+    erb :engines_three, :layout => false
   end
 
   get '/mural_00000' do

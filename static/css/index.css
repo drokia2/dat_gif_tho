@@ -5,6 +5,12 @@
   width: 14%;
 }
 
+body {
+  background-image: url(../images/venusasaboy-logo-white.png);
+  background-repeat:no-repeat;
+  background-position: center center;
+}
+
 #menu ul { 
   position: fixed;
   left: 4%;

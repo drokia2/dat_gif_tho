@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<title>Venus As a Boy</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">		
+		<link href="css/style.css" type="text/css" rel="stylesheet" />
+		<link href="css/about.css" rel="stylesheet" />
+		<link href="css/mural.css" rel="stylesheet" />
+		<link href="css/engines.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="container-fluid">				
+			<div class="row menu">
+				<div class="col-xs-1">
+					<a href="/">home</a>
+				</div>
+				<div class="col-xs-1">
+					<a href="murals">murals</a>
+				</div>		
+				<div class="col-xs-1">
+					<a href="engines">engines</a>
+				</div>		
+				<div class="col-xs-1">
+					<a href="about">about</a>
+				</div>								
+			</div>
+			<div class="row">
+				<div class="content vertical-align">
+					<%= yield %>
+				</div>
+			</div>		
+		</div>
+	</body>
+</html>

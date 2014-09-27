@@ -1,14 +1,17 @@
 
 .engine_image {
-  width: 100px;
-  height: auto;
+  width: 200px;  
+  height: auto;  
 }
 
-.engines {
-  padding-left:5%;
-  text-align: left;
+.engines {  
+  text-align: center;
+  width: 100%;
 }
 
+.engine {  
+  text-align: center;
+}
 
 ul {
   float: left;
@@ -25,10 +28,4 @@ li {
   font-size: 1rem;
   vertical-align: top;
   border-radius:100px;
-}
-
-.fullscreen_icon {
-  position:absolute;
-  right: 10px;
-  bottom: 10px;
 }

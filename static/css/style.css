@@ -3,7 +3,7 @@
     src: url('../fonts/DIN-Light.otf'); /*URL to font*/
 }
 
-body {
+body {  
   text-align: center;
   color: white;
   background-color: #000000;
@@ -21,7 +21,7 @@ h1 {
 }
 
 a {
-	font-size: 24;
+	font-size: 18px;
 	color: white;
 	text-decoration: none;
 }
@@ -32,4 +32,32 @@ h2 {
   text-align:center;
 }
 
+.menu {
+  padding-top: 20px;
+}
 
+.content {    
+  height: 100%;
+  width: 100%;
+}
+
+.vertical-align {    
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh;
+    
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-box-align : center;
+    -webkit-align-items : center;
+    -moz-box-align : center;
+    -ms-flex-align : center;
+    align-items : center;
+
+    align-items: center;
+}
+
+.center-block { float: none; }
