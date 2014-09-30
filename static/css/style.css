@@ -27,6 +27,12 @@ a {
 	text-decoration: none;
 }
 
+.highlight {
+  text-decoration: none;
+  color: black;
+  background: white;
+}
+
 .menu a:hover {
   text-decoration: none;
   color: black;

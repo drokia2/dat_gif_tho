@@ -5,19 +5,19 @@ class Vaab < Sinatra::Base
   set :public, File.dirname(__FILE__) + '/static'
 
   get '/' do
-    erb :index
+    erb :index, :locals => {:menu_item => "home"}
   end
 
   get '/murals' do
-   erb :murals
+   erb :murals, :locals => {:menu_item => "murals"}
   end
 
   get '/engines' do
-    erb :engines
+    erb :engines, :locals => {:menu_item => "engines"}
   end
 
   get '/about' do
-    erb :about
+    erb :about, :locals => {:menu_item => "about"}
   end
 
   get '/engine_00000' do
@@ -35,8 +35,7 @@ class Vaab < Sinatra::Base
   get '/next_mural' do
     erb :next_mural
   end
-
-
+  
 end
 
 
