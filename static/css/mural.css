@@ -1,18 +1,12 @@
 .mural_main {
-  height: auto;
-  width: 50%;
-  text-align: center;
-  padding: 20px;
+  height: 60%;
 }
 
 .mural_description {
   text-align: left;
-  width: 80%;
-  margin-left:10%;
   font-size:18px;
   color: #e0e0e0;
-  padding-bottom:100px;
-
+  margin: 20px;
 }
 
 .mural_icon {
