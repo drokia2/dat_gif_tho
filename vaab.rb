@@ -25,11 +25,11 @@ class Vaab < Sinatra::Base
   end
 
   get '/mural_00000' do
-    erb :mural_00000
+    erb :mural_00000, :locals => {:menu_item => "murals"}
   end
 
   get '/mural_00001' do
-    erb :mural_00001
+    erb :mural_00001, :locals => {:menu_item => "murals"}
   end
 
   get '/next_mural' do
