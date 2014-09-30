@@ -16,10 +16,9 @@
       width: 100%;
       height: 100%;
     }
-  </style>
-  <button class="fullscreen_icon" onclick='goFullscreen("canvasID")'>
-    <img  src="images/fullscreen_icon.png"/>
-  </button>
+  </style>  
+  <img class="fullscreen_icon"  src="images/fullscreen_icon_2.png" onclick='goFullscreen("canvasID")'/>
+
   <canvas class="video_player" id="canvasID"></canvas>
   <script type="text/javascript">
       function goFullscreen(id) {
@@ -55,7 +54,7 @@
 
     var WalkingCubesGUI = function() {
         this.speed = 0.0003;	        
-        this.colorFactor = 1;
+        this.colorSpread = 1;
         this.colorTravel = false;
         this.color1 = "#89d1b8";
         this.color2 = "#cce2bd";   
@@ -65,16 +64,20 @@
 
       init();
       animate();
-		};
+		};    
 
 		function init() {			
 			cubesGUI = new WalkingCubesGUI();
 			var gui = new dat.GUI();		
 			gui.add(cubesGUI, 'speed', 0, 0.001);			
-			gui.add(cubesGUI, 'colorFactor', 0, 1);
+			gui.add(cubesGUI, 'colorSpread', 0, 1);
 			gui.add(cubesGUI, 'colorTravel');
-			gui.addColor(cubesGUI, 'color1');
-			gui.addColor(cubesGUI, 'color2');
+
+      var colorFolder = gui.addFolder('Colors');
+			colorFolder.addColor(cubesGUI, 'color1');
+			colorFolder.addColor(cubesGUI, 'color2');
+      colorFolder.open();
+
 			scene = new THREE.Scene();
 				
 			//SETUP
@@ -157,7 +160,7 @@
 		            p7 = new THREE.Vector3(centerx + LONG, centery + EDGE + SHORT * (1 - verticalScalar7), 0);
 
 		            var d3 = p3.distanceTo(center);
-		            var colorFactor = cubesGUI.colorTravel ? verticalScalar13 : d3/Math.pow(maxDistance, cubesGUI.colorFactor);
+		            var colorFactor = cubesGUI.colorTravel ? verticalScalar13 : d3/Math.pow(maxDistance, cubesGUI.colorSpread);
 
 		            //COLORS		            	           
 		            var color1 = new THREE.Color(cubesGUI.color1);

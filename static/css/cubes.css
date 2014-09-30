@@ -2,8 +2,15 @@ body {
     margin: 0px;
 }
 
-.fullscreen_icon {	
+.fullscreen_icon {
+	width: 50px;
+	height: auto;	
   position:absolute;
   right: 10px;
   bottom: 10px;
+}
+
+img:hover {
+	cursor: hand;
+	cursor: pointer;
 }
