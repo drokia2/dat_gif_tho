@@ -1,4 +1,4 @@
-dat_gif_tho
+Venus As A Boy
 ===========
 
 Our mission is to create the most visually stimulating and aesthetic things
